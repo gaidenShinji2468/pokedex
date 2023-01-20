@@ -1,12 +1,12 @@
 import {useDispatch} from "react-redux";
-import {registerUser} from "/src/store/slices/userStored.slice";
+import {setCurrentUser} from "/src/store/slices/currentUser.slice";
 
 function LogOut()
 {
     const dispatch = useDispatch();
 
     sessionStorage.clear();
-    dispatch(registerUser(null));
+    dispatch(setCurrentUser(null));
 }
 
 export default LogOut;
