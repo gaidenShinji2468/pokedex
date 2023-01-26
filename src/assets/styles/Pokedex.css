@@ -1,3 +1,4 @@
-aside, #pkm-thumbnail-large {
-    display: inline-block;
+#pokedex {
+    display: flex;
+    justify-content: space-between;
 }

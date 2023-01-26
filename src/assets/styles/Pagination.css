@@ -3,7 +3,20 @@
 }
 
 .pag-ctrls-button {
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
     font-size: 14px;
-    padding: 8px 0; 
-    width: 60px;
+    background-color: transparent;
+}
+
+.pag-ctrls-button:hover {
+    background-color: var(--red) !important;
+    color: white !important;
+}
+
+.pag-ctrls-button svg {
+    width: 16px;
+    height: 16px;
 }

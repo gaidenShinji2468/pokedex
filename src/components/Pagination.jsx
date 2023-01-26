@@ -4,6 +4,13 @@ import {
 } from "react";
 import useList from "/src/hooks/useList";
 import "/src/assets/styles/Pagination.css";
+import {
+    ChevronLeft,
+    ChevronDoubleLeft,
+    ChevronRight,
+    ChevronDoubleRight
+} from "react-bootstrap-icons";
+
 
 function Pagination({
     sendItem,
@@ -39,6 +46,10 @@ function Pagination({
 	selected(value);
     }
 
+    const handleMouseOver = event => {
+        console.log(event.target)//DEBUG
+    }
+
     return (
         <ul id="pag-ctrls">
 	    <li>
@@ -46,14 +57,14 @@ function Pagination({
 	            className="pag-ctrls-button"
 	            onClick={() => head()}
 	            disabled={!Boolean(pointer)}
-	        >first</button>
+	        ><ChevronDoubleLeft/></button>
 	    </li>
 	    <li>
 	        <button
 	            className="pag-ctrls-button"
 	            onClick={() => prev()}
 	            disabled={!Boolean(pointer)}
-	        >prev</button>
+	        ><ChevronLeft/></button>
 	    </li>
 	    {
                 chunk.map((page, index) => {
@@ -63,7 +74,14 @@ function Pagination({
 			        className="pag-ctrls-button"
 			        onClick={handleClick}
 			        value={JSON.stringify(page)}
-			        style={page.isTarget ? {border: "1px solid red"} : {border: "1px solid black"}}
+			        style={page.isTarget ? 
+				    {
+				        backgroundColor: "#f83d37",
+				        color: "white"
+				    } : {
+				        backgroundColor: "transparent",
+					color: "inherit"
+				    }}
 			    >{page.pos + 1}</button>
 			</li>
 		    );
@@ -74,14 +92,14 @@ function Pagination({
 	            className="pag-ctrls-button"
 	            onClick={() => next()}
 	            disabled={pointer === collection.length - 1}
-	        >next</button>
+	        ><ChevronRight/></button>
 	    </li>
 	    <li>
 	        <button
                     className="pag-ctrls-button"
 	            onClick={() => tail()}
 	            disabled={pointer === collection.length - 1}
-	        >last</button>
+	        ><ChevronDoubleRight/></button>
 	    </li>
 	</ul>
     );

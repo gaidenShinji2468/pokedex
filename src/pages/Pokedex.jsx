@@ -27,12 +27,8 @@ function Pokedex()
 
     const getId = url => url.split("/")[6];
 
-    useEffect(() => {
-        
-    }, [pokemon]);
-
     return (
-	<div>
+	<div id="pokedex">
 	    <aside>
 	        <header>
 	            <nav>
