@@ -1,0 +1,9 @@
+#pag-ctrls li {
+    display: inline-block;
+}
+
+.pag-ctrls-button {
+    font-size: 14px;
+    padding: 8px 0; 
+    width: 60px;
+}

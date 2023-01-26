@@ -4,16 +4,20 @@ import {
 } from "react";
 import getData from "/src/tools/getData";
 
-function PokemonThumbnail({url})
+function PokemonThumbnail({url, sendPokemon})
 {
     const [pokemon, setPokemon] = useState(null);
 
     useEffect(() => {
         getData(url, setPokemon, console.log);
-    }, [url])
+    }, [url]);
+
+    const handleClick = () => {
+        sendPokemon(pokemon);
+    }
 
     return (
-	<>{pokemon ? <figure>
+	<>{pokemon ? <figure onClick={handleClick}>
 	    <figcaption>{pokemon.name}</figcaption>
 	    <ul>
                 <li>
@@ -29,16 +33,7 @@ function PokemonThumbnail({url})
 		        }
 	            </ul>
 	        </li>
-	        {
-                    pokemon?.stats.map((stat, index) => {
-                        return (
-                            <li key={index}>
-				<b>{stat.stat.name}</b><span>{stat.base_stat}</span>
-			    </li>
-			);
-		    })
-		}
-	        <li>
+	       	<li>
 	            <img
 	                src={pokemon.sprites.front_default}
 	                alt={`This is a ${pokemon.name} image`}

@@ -1,4 +1,7 @@
-import {Link} from "react-router-dom";
+import {
+    Link,
+    useNavigate
+} from "react-router-dom";
 import {
     useState,
     useEffect
@@ -15,6 +18,7 @@ function LogIn()
     const [error, setError] = useState(null);
     const userStored = useSelector(state => state.userStored);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
    
     useEffect(() => {
         setTimeout(() => {

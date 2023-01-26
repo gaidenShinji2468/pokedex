@@ -6,6 +6,8 @@ import getData from "/src/tools/getData";
 import {Link} from "react-router-dom";
 import Pokemons from "./Pokemons";
 import PokemonThumbnail from "./PokemonThumbnail";
+import Pagination from "./Pagination";
+import "/src/assets/styles/PokemonsTypes.css";
 
 function splitData(data, limit)
 {
@@ -24,12 +26,14 @@ function splitData(data, limit)
     return splitted;
 }
 
-function PokemonsTypes()
+function PokemonsTypes({sendPokemon})
 {
     const [types, setTypes] = useState([]);
     const [type, setType] = useState("All pokemons");
     const [pokemons, setPokemons] = useState([]);
+    const [limit, setLimit] = useState(12);
     const [currentPos, setCurrentPos] = useState(0);
+    const [positions, setPositions] = useState([]);
 
     useEffect(() => {
         getData("https://pokeapi.co/api/v2/type", res => setTypes(res.results), console.log);
@@ -37,22 +41,30 @@ function PokemonsTypes()
 
     useEffect(() => {
         type !== "All pokemons" && getData(`https://pokeapi.co/api/v2/type/${type}`, res => handleSplit(res.pokemon), console.log);
-    }, [type])
+    }, [type, limit])
 
     useEffect(() => {
-        pokemons?.length && setCurrentPos(0); 
+        if(pokemons?.length)
+	{
+	    preparePositions();
+	}
     }, [pokemons])
 
+    const preparePositions = () => {
+        const positionsCpy = [];
+
+	for(let pos of pokemons.keys())
+	    positionsCpy.push(pos);
+
+	setPositions(positionsCpy);
+    } 
+
     const handleSplit = pokemons => {
-        setPokemons(splitData(pokemons, 20));
+        setPokemons(splitData(pokemons, limit));
     }
 
-    const handlePrev = () => {
-        if(currentPos > 0) setCurrentPos(currentPos - 1);
-    }
-
-    const handleNext = () => {
-        if(currentPos < pokemons.length) setCurrentPos(currentPos + 1);
+    const handleChange = event => {
+        setLimit(parseInt(event.target.value));
     }
 
     return (
@@ -70,33 +82,41 @@ function PokemonsTypes()
 	        }
 	    </select>
 	    {   
-                type === "All pokemons" ? <Pokemons/> :
+                type === "All pokemons" ? <Pokemons sendPokemon={sendPokemon}/> :
 		<>
-		<ul>
+	        <fieldset>
+                    <label htmlFor="limit">Limit to show</label><select
+                        id="limit"
+	                onChange={handleChange}
+		        defaultValue={12}
+	            >
+	                <option>4</option>
+	                <option>8</option>
+	                <option>12</option>
+	                <option>16</option>
+	                <option>20</option>
+	            </select>
+	        </fieldset>
+		<ul id="pokemons-types">
                     {
                         pokemons[currentPos]?.map((pokemon, index) => {
 			   const id = pokemon.pokemon.url.split("/")[6]; 
 			   return (
-                                <li key={index}>
-				    <Link to={`/pokedex/${id}`}>
-				        <PokemonThumbnail url={pokemon.pokemon.url}/>
-				    </Link>
-			        </li>
+                               <li key={index}>
+				   <PokemonThumbnail
+				       url={pokemon.pokemon.url}
+				       sendPokemon={sendPokemon}
+				   />
+			       </li>
 			    );
 		        })
 		    }
 	        </ul>
-		<div>
-		    <button
-                        onClick={handlePrev}
-		        disabled={!Boolean(currentPos)}
-		    >Prev</button>
-		    <button
-                        onClick={handleNext}
-		        disabled={currentPos === pokemons.length - 1}
-		    >Next</button>
-		</div>
-		</>
+		<Pagination
+                    sendItem={currentPos => setCurrentPos(currentPos)}
+		    collection={positions}
+		/>
+	        </>
 	    }
 	</div>
     );

@@ -1,0 +1,16 @@
+aside {
+    display: inline-block;
+}
+
+aside:nth-child(2) {
+    margin-left: 50px;
+}
+
+#stats {
+    height: 500px;
+}
+
+#moves {
+    height: 500px;
+    overflow-y: scroll;
+}
